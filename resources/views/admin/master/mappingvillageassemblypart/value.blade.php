@@ -15,10 +15,10 @@
          <tbody>
           @foreach ($assemblyParts as $assemblyPart)
            <tr>
-             <td>{{ $assemblyPart->assembly_id }}</td>
+             <td>{{ $assemblyPart->assembly->name_e or ''}}</td>
              <td>{{ $assemblyPart->part_no }}</td>
              <td class="text-center">
-               <a href="" title="Remove" class="btn"><i class="fa fa-remove text-danger"></i></a>
+               <a onclick="callAjax(this,'{{ route('admin.Master.MappingVillageAssemblyPartRemove',$assemblyPart->id) }}')" title="Remove" class="btn" select-triger="village_select_box" success-popup="true"><i class="fa fa-remove text-danger"></i></a>
              </td>
            </tr> 
           @endforeach
@@ -34,18 +34,18 @@
       <div class="row"> 
       <div class="col-lg-6 form-group">
         <label>Assembly</label>
-        <select name="" class="form-control">
+        <select name="assembly" class="form-control" id="assembly_select_box" onchange="callAjax(this,'{{ route('admin.Master.MappingAssemblyWisePartNo') }}'+'?village_id='+$('#village_select_box').val(),'part_no_select_box')">
+          <option selected disabled>Select Assembly</option> 
           @foreach ($assemblys as $assembly)
-          <option value="">{{ $assembly->name_e }}</option> 
+          <option value="{{ $assembly->id }}">{{ $assembly->name_e }}</option> 
           @endforeach 
         </select> 
       </div>
       <div class="col-lg-6 form-group">
         <label>Part No.</label>
-        <select name="" class="form-control">
-          @foreach ($Parts as $Part)
-          <option value="">{{ $Part->part_no }}</option> 
-          @endforeach 
+        <select name="part_no" class="form-control" id="part_no_select_box">
+          <option selected disabled>Select Part</option> 
+            
         </select> 
       </div>
       <div class="col-lg-12 form-group text-center">

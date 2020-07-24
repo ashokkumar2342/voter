@@ -4,26 +4,23 @@
      <h3 class="card-title"></h3>
     </div> 
     <div class="card-body">
-       <table class="table">
-         <thead>
-           <tr>
-             <th>Assembly Code</th>
-             <th>Part No.</th>
-             <th>Action</th>
-           </tr>
-         </thead>
-         <tbody>
-          {{-- @foreach ($assemblyParts as $assemblyPart)
-           <tr>
-             <td>{{ $assemblyPart->assembly_id }}</td>
-             <td>{{ $assemblyPart->part_no }}</td>
-             <td class="text-center">
-               <a href="" title="Remove" class="btn"><i class="fa fa-remove text-danger"></i></a>
-             </td>
-           </tr> 
-          @endforeach --}}
-         </tbody>
-       </table>
+      <table class="table table-bordered table-striped">
+        <thead>
+          <tr>
+            <th>Sr.No</th>
+            <th>Name </th>
+            <th>Village</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+        
     </div>
   </div>
 </div>

@@ -1,5 +1,6 @@
-<div class="col-md-6"> 
-  {{ Form::label('sub_menu','Menu',['class'=>' control-label']) }}
+<div class="row"> 
+<div class="col-md-8"> 
+  {{ Form::label('sub_menu','Menu',['class'=>' control-label']) }}</br>
   <select class="multiselect" multiple="multiple"  name="sub_menu[]" > 
     @foreach ($menus as $menu) 
     <optgroup label="{{ $menu->name }}"> 
@@ -12,11 +13,16 @@
     @endforeach 
   </select> 
 </div>
-<div class="col-md-1" style="margin-top: 24px"> 
+<div class="col-md-2" style="margin-top: 24px"> 
   <button type="submit"  class="btn btn-success">Save</button>  
 </div>  
-<div class="col-md-1" style="margin-top: 24px"> 
+<div class="col-md-2" style="margin-top: 24px"> 
   <a href="{{ route('admin.account.user.menu.assign.report',Crypt::encrypt($id)) }}" class="btn btn-primary" target="blank" title="">PDF</a> 
-</div>  
+</div>
+</div> 
+ 
+   
 @include('admin.account.report.user_menu_assign_repot') 
+  
+  
  

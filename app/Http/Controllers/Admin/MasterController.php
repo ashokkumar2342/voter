@@ -15,6 +15,7 @@ use App\Model\WardVillage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use PDF;
 
@@ -22,7 +23,7 @@ class MasterController extends Controller
 {
    public function index()
    { 
-     try {ddd
+     try {
           $States= State::orderBy('name_e','ASC')->get();   
           return view('admin.master.states.index',compact('States'));
         } catch (Exception $e) {
@@ -236,6 +237,7 @@ class MasterController extends Controller
     public function villageEdit($id)
     {
        try {
+        
           $Districts= District::orderBy('name_e','ASC')->get();   
           $States= State::orderBy('name_e','ASC')->get();   
           $BlocksMcs= BlocksMc::find($id);  
@@ -244,7 +246,7 @@ class MasterController extends Controller
             
         }
     } 
-     //------------village----------------------------//
+     //------------ward-village----------------------------//
 
     public function ward(Request $request)
    {
@@ -252,12 +254,39 @@ class MasterController extends Controller
           $Districts= District::orderBy('name_e','ASC')->get();   
           $States= State::orderBy('name_e','ASC')->get();   
           $BlocksMcs= BlocksMc::orderBy('name_e','ASC')->get();   
-          $Villages= Village::orderBy('name_e','ASC')->get();   
-          return view('admin.master.wards.index',compact('Districts','States','BlocksMcs','Villages'));
+          $Villages= Village::orderBy('name_e','ASC')->get();
+          $wards= WardVillage::orderBy('ward_no','ASC')->get();    
+          return view('admin.master.wards.index',compact('Districts','States','BlocksMcs','Villages','wards'));
         } catch (Exception $e) {
             
         }
    }
+   public function wardStore(Request $request,$id=null)
+   {  
+       $rules=[
+            'states' => 'required', 
+            'district' => 'required', 
+            'block_mcs' => 'required', 
+            'village' => 'required', 
+            
+      ];
+
+      $validator = Validator::make($request->all(),$rules);
+      if ($validator->fails()) {
+          $errors = $validator->errors()->all();
+          $response=array();
+          $response["status"]=0;
+          $response["msg"]=$errors[0];
+          return response()->json($response);// response as json
+      }
+      else {
+        DB::select(DB::raw("call up_create_village_ward ('$request->village','$request->ward','0')"));
+
+        
+       $response=['status'=>1,'msg'=>'Submit prepared'];
+       return response()->json($response);
+      }
+    }
     //------------Assembly----------------------------//
 
     public function Assembly(Request $request)
@@ -383,11 +412,55 @@ class MasterController extends Controller
           $assemblys= Assembly::orderBy('name_e','ASC')->get();  
           $Parts= AssemblyPart::orderBy('part_no','ASC')->get();  
           $assemblyParts= AssemblyPart::where('village_id',$request->id)->get();   
-          return view('admin.master.mappingvillageassemblypart.value',compact('assemblys','Parts','assemblyParts'));
+             
+          return view('admin.master.mappingvillageassemblypart.value',compact('assemblys','Parts','assemblyParts','OldParts'));
         } catch (Exception $e) {
             
         }
-    } 
+    }
+    public function MappingAssemblyWisePartNo(Request $request)
+    { 
+       $Parts= AssemblyPart::where('assembly_id',$request->id)->get();
+       $OldParts= AssemblyPart::where('village_id',$request->village_id)->pluck('id')->toArray();
+       return view('admin.master.assemblypart.part_no_select_box',compact('Parts','OldParts'));  
+    }
+    public function MappingVillageAssemblyPartStore(Request $request)
+    {
+        $rules=[
+             
+            'village' => 'required', 
+            'assembly' => 'required', 
+            'part_no' => 'required', 
+             
+            
+      ];
+
+      $validator = Validator::make($request->all(),$rules);
+      if ($validator->fails()) {
+          $errors = $validator->errors()->all();
+          $response=array();
+          $response["status"]=0;
+          $response["msg"]=$errors[0];
+          return response()->json($response);// response as json
+      }
+      else {
+          $assemblyPart=AssemblyPart::where('assembly_id',$request->assembly)->where('id',$request->part_no)->first();
+          $assemblyPart->village_id=$request->village; 
+          $assemblyPart->save();
+        
+       $response=['status'=>1,'msg'=>'Submit Successfully'];
+       return response()->json($response);
+      }
+    }
+    public function MappingVillageAssemblyPartRemove($assemblyPart_id)
+     {
+          $assemblyPart=AssemblyPart::find($assemblyPart_id);
+          $assemblyPart->village_id=0; 
+          $assemblyPart->save();
+        
+          $response=['status'=>1,'msg'=>'Remove Successfully'];
+          return response()->json($response);
+     } 
   //------------ward-bandi----------WardBandi-------//
     public function WardBandi()
     {
@@ -414,8 +487,8 @@ class MasterController extends Controller
     public function WardBandiFilterAssemblyPart(Request $request)
     {
        try{ 
-             
-          return view('admin.master.wardbandi.voter_list',compact('assemblyParts','WardVillages'));
+           $voterLists=DB::select(DB::raw("select `v`.`sr_no`, `v`.`name_l`, `v`.`father_name_l`, `vil`.`name_l` as `vil_name`, `wv`.`ward_no`from `voters` `v`Left Join `villages` `vil` on `vil`.`id` = `v`.`village_id`Left Join `ward_villages` `wv` on `wv`.`id` = `v`.`ward_id`Where `v`.`assembly_part_id` =$request->id;"));  
+          return view('admin.master.wardbandi.voter_list',compact('voterLists'));
         } catch (Exception $e) {
             
         }
@@ -423,12 +496,80 @@ class MasterController extends Controller
     public function WardBandiFilterward(Request $request)
     {
        try{ 
-             
-          return view('admin.master.wardbandi.sr_no_form',compact('assemblyParts','WardVillages'));
+          $total_mapped=DB::select(DB::raw("select count(*) as `total_mapped` from `voters` where `ward_id` = $request->id;"));   
+          return view('admin.master.wardbandi.sr_no_form',compact('total_mapped'));
         } catch (Exception $e) {
             
         }
+    }
+    public function WardBandiStore(Request $request)
+   {  
+       $rules=[
+            'states' => 'required', 
+            'district' => 'required', 
+            'block_mcs' => 'required', 
+            'village' => 'required', 
+            'assembly_part' => 'required', 
+            'from_sr_no' => 'required', 
+            'to_sr_no' => 'required', 
+            
+      ];
+
+      $validator = Validator::make($request->all(),$rules);
+      if ($validator->fails()) {
+          $errors = $validator->errors()->all();
+          $response=array();
+          $response["status"]=0;
+          $response["msg"]=$errors[0];
+          return response()->json($response);// response as json
+      }
+      else {
+        if ($request->forcefully==1) {
+         $forcefully=1; 
+        }else{
+         $forcefully=0; 
+        }
+
+         DB::select(DB::raw("call up_ward_bandi_voters ('$request->assembly_part','$request->ward','$request->from_sr_no','$request->to_sr_no','$forcefully')"));
+        
+        
+       $response=['status'=>1,'msg'=>'Submit Successfully'];
+       return response()->json($response);
+      }
     } 
 
+    
+
+
+
+    //---------onchange---------onchange-----------onchange---------------onchange-----------onchange
+
+    public function stateWiseDistrict(Request $request)
+    {
+       try{ 
+          $Districts=District::where('state_id',$request->id)->get();   
+          return view('admin.master.districts.value_select_box',compact('Districts'));
+        } catch (Exception $e) {
+            
+        }
+    }
+    public function DistrictWiseBlock(Request $request)
+    {
+       try{ 
+          $BlocksMcs=BlocksMc::where('districts_id',$request->id)->get();   
+          return view('admin.master.block.value_select_box',compact('BlocksMcs'));
+        } catch (Exception $e) {
+            
+        }
+    }
+    public function BlockWiseVillage(Request $request)
+    {
+       try{ 
+          $Villages=Village::where('blocks_id',$request->id)->get();   
+          return view('admin.master.village.value_select_box',compact('Villages'));
+        } catch (Exception $e) {
+            
+        }
+    }
     
 }

@@ -51,13 +51,13 @@
                         </div> 
                     </div>
                     <div class="col-lg-6">
-                        <div class="card card-primary"> 
-                             <table id="state_table" class="table table-striped table-hover control-label">
+                        <div class="card card-primary table-responsive"> 
+                             <table id="state_table" class="table table-striped table-bordered">
                                  <thead>
                                      <tr>
                                          <th>Code</th>
-                                         <th>Name (English)</th>
-                                         <th>Name (Local Language)</th>
+                                         <th class="text-nowrap">Name (English)</th>
+                                         <th class="text-nowrap">Name (Local Language)</th>
                                          <th>Action</th>
                                           
                                      </tr>
@@ -83,7 +83,14 @@
         </div> 
     </section>
     @endsection
-    <script type="text/javascript">
-        $('#ddd').DataTable();
-    </script> 
-
+    @push('links')
+<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css">
+@endpush
+@push('scripts')
+ <script type="text/javascript" src="//cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
+ <script type="text/javascript">
+     $(document).ready(function(){
+        $('#state_table').DataTable();
+    });
+</script> 
+@endpush

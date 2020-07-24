@@ -21,4 +21,8 @@ class WardVillage extends Model
       {
              return $this->hasOne('App\Model\BlocksMc','id','blocks_id');
       }
+      public function village()
+      {
+             return $this->hasOne('App\Model\Village','id','village_id');
+      }
 }

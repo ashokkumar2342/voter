@@ -29,8 +29,8 @@
                                 </div>
                             </div> 
                         </div> 
-                        <div id="menu_list">  
-                        </div> 
+                        <div class="col-lg-8" id="menu_list">  
+                         
                     </div>
                 </form>  
             </div> 

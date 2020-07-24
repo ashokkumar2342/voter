@@ -65,7 +65,7 @@
                                  <tbody>
                                     @foreach ($assemblyParts as $assemblyPart)
                                      <tr>  
-                                         <td>{{ $assemblyPart->assembly_id }}</td>
+                                         <td>{{ $assemblyPart->assembly->name_e or '' }}</td>
                                          <td>{{ $assemblyPart->part_no }}</td>
                                           
                                          <td class="text-nowrap">

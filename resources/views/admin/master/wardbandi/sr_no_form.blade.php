@@ -1,6 +1,6 @@
 <div class="card card-info">
   <div class="card-header">
-     <h3 class="card-title"></h3>
+     <h3 class="card-title">Total Mapped : {{ $total_mapped[0]->total_mapped }}</h3>
     </div> 
     <div class="card-body" >
     <div class="row"> 
@@ -16,7 +16,7 @@
         <div class="row"> 
           <div class="col-lg-5 form-group">
 	       	<div class="icheck-primary d-inline">
-	          <input type="checkbox" value="" name="todo1" id="todoCheck1">
+	          <input type="checkbox" value="1" name="forcefully" id="todoCheck1" >
 	          <label for="todoCheck1">Forcefully Move</label>
 	        </div>
          </div>
