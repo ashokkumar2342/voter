@@ -1,16 +1,19 @@
 @extends('admin.layout.base')
 @section('body')
-  <!-- Main content -->
-    <section class="content">
-      <div class="row">
-        <div class="col-xs-12">          
-            <!-- /.box-header -->            
-          <div class="box">
-            <div class="box-header">
-              <h3 class="box-title">List Users</h3> 
-            </div> 
-            <div class="box-body">
-            <form action="{{ route('admin.account.list.user.generate') }}" method="post" target="blank">
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h3>List Users</h3>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right"> 
+                </ol>
+            </div>
+        </div> 
+        <div class="card card-info"> 
+            <div class="card-body">
+               <form action="{{ route('admin.account.list.user.generate') }}" method="post" target="blank">
             {{ csrf_field() }} 
             <button type="submit" class="btn btn-primary btn-sm pull-right" title="" style="margin:5px">PDF Generate</button>
               <div class="col-lg-12">
@@ -79,17 +82,12 @@
             </div>
             </div>
             </div>
-            </form>
-          </div>
-          <!-- /.box -->
+            </form> 
+            </div> 
         </div>
-        <!-- /.col -->
-      </div>
-      <!-- /.row -->
+    </div>     
     </section>
-    <!-- /.content -->
-
-@endsection
+    @endsection
 @push('links')
 <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css">
 @endpush

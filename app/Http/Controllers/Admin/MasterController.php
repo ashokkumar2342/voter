@@ -69,7 +69,12 @@ class MasterController extends Controller
        
      }
 
-
+    public function delete($id)
+    {
+       $States= State::find(Crypt::decrypt($id));  
+       $States->delete();
+       return redirect()->back()->with(['message'=>'Delete Successfully','class'=>'success']);  
+    }
 //-------districts--------------districts--------------districts---------------districts----//
 
 
@@ -124,7 +129,12 @@ class MasterController extends Controller
         }
     }
     
-   
+    public function districtsDelete($id)
+    {
+       $District= District::find(Crypt::decrypt($id));  
+       $District->delete();
+       return redirect()->back()->with(['message'=>'Delete Successfully','class'=>'success']);  
+    }
      
     //------------block-mcs----------------------------//
 
@@ -181,6 +191,12 @@ class MasterController extends Controller
             
         }
     }
+    public function BlockMCSDelete($id)
+    {
+       $BlocksMc= BlocksMc::find(Crypt::decrypt($id));  
+       $BlocksMc->delete();
+       return redirect()->back()->with(['message'=>'Delete Successfully','class'=>'success']);  
+    }
 
     //
     //------------village----------------------------//
@@ -191,7 +207,7 @@ class MasterController extends Controller
           $Districts= District::orderBy('name_e','ASC')->get();   
           $States= State::orderBy('name_e','ASC')->get();   
           $BlocksMcs= BlocksMc::orderBy('name_e','ASC')->get();   
-          $Villages= Village::orderBy('name_e','ASC')->get();   
+          $Villages= Village::orderBy('name_e','ASC')->get(); 
           return view('admin.master.village.index',compact('Districts','States','BlocksMcs','Villages'));
         } catch (Exception $e) {
             
@@ -230,7 +246,7 @@ class MasterController extends Controller
        $States->print_prepared=0; 
        $States->is_locked=0; 
        $States->save();
-       $response=['status'=>1,'msg'=>'Submit prepared'];
+       $response=['status'=>1,'msg'=>'Submit Successfully'];
        return response()->json($response);
       }
     }
@@ -240,11 +256,17 @@ class MasterController extends Controller
         
           $Districts= District::orderBy('name_e','ASC')->get();   
           $States= State::orderBy('name_e','ASC')->get();   
-          $BlocksMcs= BlocksMc::find($id);  
-          return view('admin.master.block.edit',compact('Districts','States','BlocksMcs'));
+          $BlocksMcs= BlocksMc::find($id); 
+          $village=Village::find($id); 
+          return view('admin.master.village.edit',compact('Districts','States','BlocksMcs','village'));
         } catch (Exception $e) {
             
         }
+    }
+    public function villageWardAdd($village_id)
+    {
+        $Village= Village::find($village_id);
+        return view('admin.master.village.add_ward',compact('Village'));
     } 
      //------------ward-village----------------------------//
 

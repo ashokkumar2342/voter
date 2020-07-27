@@ -70,14 +70,14 @@
                              <table id="district_table" class="table table-striped table-hover control-label">
                                  <thead>
                                      <tr>
-                                         <th>States</th>
-                                         <th>District</th>
-                                         <th>Block MCS</th>
-                                         <th>Village MCS</th>
-                                         <th>Ward No.</th>
-                                         <th>Ward Name (English)</th>
-                                         <th>Ward Name (Local Language)</th>
-                                         <th>Action</th>
+                                         <th class="text-nowrap">States</th>
+                                         <th class="text-nowrap">District</th>
+                                         <th class="text-nowrap">Block MCS</th>
+                                         <th class="text-nowrap">Village MCS</th>
+                                         <th class="text-nowrap">Ward No.</th>
+                                         <th class="text-nowrap">Ward Name (Eng)</th>
+                                         <th class="text-nowrap">Ward Name (Local Lang)</th>
+                                          
                                           
                                      </tr>
                                  </thead>
@@ -91,10 +91,7 @@
                                          <td>{{ $ward->ward_no }}</td>
                                          <td>{{ $ward->name_e }}</td>
                                          <td>{{ $ward->name_l }}</td>
-                                         <td class="text-nowrap">
-                                             <a onclick="callPopupLarge(this,'{{ route('admin.Master.BlockMCSEdit',$ward->id) }}')" title="" class="btn btn-info btn-sm"><i class="fa fa-edit"></i></a>
-                                             <a href="" title="" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></a>
-                                         </td>
+                                         
                                      </tr> 
                                     @endforeach
                                  </tbody>

@@ -221,18 +221,23 @@ Route::group(['middleware' => 'admin'], function() {
 	    Route::get('/', 'MasterController@index')->name('admin.Master.index');	   
 	    Route::post('Store/{id?}', 'MasterController@store')->name('admin.Master.store');	   
 	    Route::get('Edit{id}', 'MasterController@edit')->name('admin.Master.edit');
+	    Route::get('Delete{id}', 'MasterController@delete')->name('admin.Master.delete');
         //-districts-//
 	    Route::get('Districts', 'MasterController@districts')->name('admin.Master.districts');	   
 	    Route::post('Districts-Store{id?}', 'MasterController@districtsStore')->name('admin.Master.districtsStore');	   
 	    Route::get('Districts-Edit/{id}', 'MasterController@districtsEdit')->name('admin.Master.districtsEdit');
+	    Route::get('Districts-delete/{id}', 'MasterController@districtsDelete')->name('admin.Master.districtsDelete');
 	    //-block-mcs-//
 	    Route::get('BlockMCS', 'MasterController@BlockMCS')->name('admin.Master.blockmcs');	   
 	    Route::post('BlockMCSStore{id?}', 'MasterController@BlockMCSStore')->name('admin.Master.BlockMCSStore');	   
 	    Route::get('BlockMCSEdit/{id}', 'MasterController@BlockMCSEdit')->name('admin.Master.BlockMCSEdit');
+	    Route::get('BlockMCSDelete/{id}', 'MasterController@BlockMCSDelete')->name('admin.Master.BlockMCSDelete');
 	    //-village--//
 	    Route::get('village', 'MasterController@village')->name('admin.Master.village');	   
 	    Route::post('village-store{id?}', 'MasterController@villageStore')->name('admin.Master.village.store');	   
 	    Route::get('village-edit/{id}', 'MasterController@villageEdit')->name('admin.Master.village.edit');
+	    Route::get('village-delete/{id}', 'MasterController@villageDelete')->name('admin.Master.village.delete');
+	    Route::get('village-ward-add/{id}', 'MasterController@villageWardAdd')->name('admin.Master.village.ward.add');
 	    //-village--//
 	    Route::get('ward', 'MasterController@ward')->name('admin.Master.ward');	   
 	    Route::post('ward-store{id?}', 'MasterController@wardStore')->name('admin.Master.ward.store');	 

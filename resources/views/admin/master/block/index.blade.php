@@ -93,7 +93,7 @@
                                          <td>{{ $BlockMc->name_l }}</td>
                                          <td class="text-nowrap">
                                              <a onclick="callPopupLarge(this,'{{ route('admin.Master.BlockMCSEdit',$BlockMc->id) }}')" title="" class="btn btn-info btn-sm"><i class="fa fa-edit"></i></a>
-                                             <a href="" title="" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></a>
+                                             <a href="{{ route('admin.Master.BlockMCSDelete',Crypt::encrypt($BlockMc->id)) }}" onclick="return confirm('Are you sure you want to delete this item?');"  title="" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></a>
                                          </td>
                                      </tr> 
                                     @endforeach
