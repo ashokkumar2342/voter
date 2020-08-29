@@ -9,6 +9,7 @@ use App\Model\Gender;
 use App\Model\ParentRegistration;
 use App\Model\Religion;
 use App\Model\SessionDate;
+use App\Model\Voter;
 use App\Model\StudentDefaultValue;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
@@ -30,6 +31,10 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function conn($value='')
+    {
+       return 'dd';
+    }
     public function index()
     {
         // Mail::send(new SendMail('email@ashok.com','otp'));
@@ -63,4 +68,31 @@ class HomeController extends Controller
         // $inbox->param =$request->Param;
         // $inbox->full_msg =$request->FullMsg;
     }
+
+    public function saveapi()
+           { 
+             // $ch = curl_init();
+             // curl_setopt($ch, CURLOPT_URL, "http://localhost:8000/getdata");
+             // // SSL important
+             // curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+             // curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); 
+             // $output = curl_exec($ch); 
+             // curl_close($ch);
+
+             // $datas=json_decode($output);
+             // dd($datas);
+             $ipinfoAPI="http://localhost:8000/getdata";
+            $json =file_get_contents($ipinfoAPI);
+            $data= (array) json_decode($json);
+            
+             foreach ($datas as $data) {
+               $Voter =new Voter();
+               $Voter->name_e =$data->name;
+               $Voter->mobile_no =$data->mobile;
+               $Voter->save();
+             }
+            
+               $phonebooks =Phonebook::get();
+             return view('ayush',compact('phonebooks'));
+           }
 }

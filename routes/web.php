@@ -75,4 +75,21 @@ Route::get('login/google', 'Auth\LoginController@googleredirectToProvider');
 Route::get('login/google/callback', 'Auth\LoginController@googlehandleProviderCallback');
 
 Route::get('inbox', 'HomeController@inbox');
+Route::get('saveapidata', 'HomeController@saveapi');
+
+
+Route::group(['prefix' => 'Database'], function() {
+           Route::get('Connection', 'Admin\DatabaseConnectionController@DatabaseConnection')->name('admin.database.connection');
+           Route::post('ConnectionStore', 'Admin\DatabaseConnectionController@ConnectionStore')->name('admin.database.conection.store');
+           Route::get('getdata', 'Admin\DatabaseConnectionController@getData')->name('admin.database.conection.getData');
+
+           Route::get('getTable', 'Admin\DatabaseConnectionController@getTable')->name('admin.database.conection.getTable');
+           Route::post('tableRecordStore', 'Admin\DatabaseConnectionController@tableRecordStore')->name('admin.database.conection.tableRecordStore');
+    });
+
+Route::get('conn', 'HomeController@conn');
+Route::get('ashok', function () {
+    return 'dd';
+ 
+});
 

@@ -269,8 +269,22 @@ Route::group(['middleware' => 'admin'], function() {
 	    
 	     
 	});
+    Route::group(['prefix' => 'VoterDetails'], function() {
+           Route::get('/', 'VoterDetailsController@index')->name('admin.voter.details');
+           Route::get('districtWiseAssembly', 'VoterDetailsController@districtWiseAssembly')->name('admin.voter.districtWiseAssembly');
+           Route::get('districtWiseVillage', 'VoterDetailsController@districtWiseVillage')->name('admin.voter.districtWiseVillage');
+           Route::get('AssemblyWisePartNo', 'VoterDetailsController@AssemblyWisePartNo')->name('admin.voter.AssemblyWisePartNo');
+           Route::get('VillageWiseWard', 'VoterDetailsController@VillageWiseWard')->name('admin.voter.VillageWiseWard');
+           Route::get('calculateAge', 'VoterDetailsController@calculateAge')->name('admin.voter.calculateAge');
+           Route::post('store', 'VoterDetailsController@store')->name('admin.voter.details.store');
 
-
+    //--------------------Delete----------Delete--------delete----------------------------//       
+           Route::get('DeteleAndRestore', 'VoterDetailsController@DeteleAndRestore')->name('admin.voter.DeteleAndRestore');
+            Route::get('DeteleAndRestoreForm', 'VoterDetailsController@DeteleAndRestoreForm')->name('admin.voter.DeteleAndRestoreForm');
+           Route::get('DeteleAndRestore', 'VoterDetailsController@DeteleAndRestore')->name('admin.voter.DeteleAndRestore');
+           Route::get('DeteleAndRestoreSearch', 'VoterDetailsController@DeteleAndRestoreSearch')->name('admin.voter.DeteleAndRestoreSearch');
+           Route::get('DeteleAndRestoreSearchFilter', 'VoterDetailsController@DeteleAndRestoreSearchFilter')->name('admin.voter.DeteleAndRestoreSearchFilter');
+    });
 	 	 
             
 
